@@ -1,83 +1,132 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div class="fill-height">
+    <div
+      class="d-flex justify-center align-center overflow-hidden"
+      style="height: 100vh; position: relative"
+    >
+      <div
+        class="primary circle zoomIn cornerToCurrentPosition"
+        style="
+          top: calc(0px - (var(--size) / 3));
+          right: calc(0px - (var(--size) / 3));
+        "
+        :style="{
+          '--size': $vuetify.breakpoint.smAndDown
+            ? '350px'
+            : $vuetify.breakpoint.mdAndDown
+            ? '450px'
+            : '550px',
+        }"
+      ></div>
+      <div
+        class="primary circle zoomIn cornerToCurrentPosition2"
+        style="
+          bottom: calc(0px - (var(--size) / 3));
+          left: calc(0px - (var(--size) / 3));
+        "
+        :style="{
+          '--size': $vuetify.breakpoint.smAndDown
+            ? '350px'
+            : $vuetify.breakpoint.mdAndDown
+            ? '450px'
+            : '550px',
+        }"
+      ></div>
+      <div class="text-center px-5 topToCenter">
+        <div
+          class="black--text text-center"
+          :class="{
+            'text-h2': $vuetify.breakpoint.smAndDown,
+            'text-h1': $vuetify.breakpoint.mdAndUp,
+          }"
+          style="font-family: 'Autour One', cursive !important"
+        >
+          Doofat
+        </div>
+        <div
+          style="
+            font-family: 'Autour One', cursive !important;
+            letter-spacing: 10px;
+          "
+        >
+          Make Your Meal Easier
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'LangingPage',
+  layout: 'noauth',
+  validate({ store, redirect }) {
+    if (store.state.auth.loggedIn) {
+      redirect('/home')
+    }
+    return true
+  },
 }
 </script>
+
+<style>
+.circle {
+  --size: 100px;
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background-color: white;
+}
+
+.zoomIn {
+  animation: zoomIn 0.5s ease-in-out;
+}
+
+@keyframes zoomIn {
+  50% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cornerToCurrentPosition {
+  animation: cornerToCurrentPosition 1s ease-in-out;
+}
+.cornerToCurrentPosition2 {
+  animation: cornerToCurrentPosition2 1.5s ease-in-out;
+}
+@keyframes cornerToCurrentPosition {
+  0% {
+    transform: translate(100%, -100%);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes cornerToCurrentPosition2 {
+  0% {
+    transform: translate(-100%, 100%);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+}
+
+.topToCenter {
+  animation: topToCenter 1s ease-in-out;
+}
+
+@keyframes topToCenter {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+}
+</style>
