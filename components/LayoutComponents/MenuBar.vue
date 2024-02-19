@@ -2,7 +2,7 @@
   <div class="menu">
     <v-card
       class="mb-4 mx-2 px-3 py-2 d-flex justify-center align-center flex-wrap center-shadow chlid"
-      style="gap: 6px; border-radius: 100px;"
+      style="gap: 6px; border-radius: 100px"
     >
       <v-avatar
         v-ripple
@@ -48,29 +48,29 @@
         </v-icon>
       </v-btn>
     </v-card>
-    <profile-dialog />
     <QRCode ref="QRCode" @dialog="setDialog" />
   </div>
 </template>
 
 <script>
+import QRCode from "@/components/QrNfc/QRCode.vue";
 export default {
-  name: 'MenuBar',
-  components: {},
+  name: "MenuBar",
+  components: { QRCode },
   data() {
     return {
       dialog: false,
-    }
+    };
   },
   mounted() {
-    this.$store.commit('setQRcode', this.$refs.QRCode)
+    this.$store.commit("setQRcode", this.$refs.QRCode);
   },
   methods: {
     setDialog(val) {
-      this.dialog = val
+      this.dialog = val;
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
