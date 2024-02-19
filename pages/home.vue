@@ -44,25 +44,25 @@ export default {
       orders: [],
     }
   },
-  async mounted() {
-    const orders = await this.$axios.get('/api/order?status=pending,new')
-    this.orders = orders.data
-    this.socket = this.$nuxtSocket({
-      channel: '/',
-    })
-    const storeIds = []
-    await orders.data.forEach(async (order) => {
-      if (!storeIds.includes(order.storeId)) {
-        storeIds.push(order.storeId)
-        await this.socket.on(`order/store/${order.storeId}`, (data) => {
-          this.updateQueue(data, order.storeId)
-        })
-      }
-      await this.socket.on(`order/${order.id}`, (data) => {
-        this.updateData(data)
-      })
-    })
-  },
+  // async mounted() {
+  //   const orders = await this.$axios.get('/api/order?status=pending,new')
+  //   this.orders = orders.data
+  //   this.socket = this.$nuxtSocket({
+  //     channel: '/',
+  //   })
+  //   const storeIds = []
+  //   await orders.data.forEach(async (order) => {
+  //     if (!storeIds.includes(order.storeId)) {
+  //       storeIds.push(order.storeId)
+  //       await this.socket.on(`order/store/${order.storeId}`, (data) => {
+  //         this.updateQueue(data, order.storeId)
+  //       })
+  //     }
+  //     await this.socket.on(`order/${order.id}`, (data) => {
+  //       this.updateData(data)
+  //     })
+  //   })
+  // },
   methods: {
     updateData(data) {
       const index = this.orders.findIndex((order) => order.id === data.id)
