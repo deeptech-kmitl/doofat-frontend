@@ -17,7 +17,13 @@
       >
         <div
           style="
-            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 5%, rgba(255,255,255,0.9) 95%, rgba(255,255,255,1) 100%);
+            background: linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 1) 0%,
+              rgba(255, 255, 255, 0.9) 5%,
+              rgba(255, 255, 255, 0.9) 95%,
+              rgba(255, 255, 255, 1) 100%
+            );
           "
         >
           <all-queues :queues="orders" />
@@ -30,51 +36,49 @@
 </template>
 
 <script>
-import QrNfcCard from '~/components/QrNfc/QrNfcCard.vue'
-import MyContainer from '~/components/LayoutComponents/MyContainer.vue'
-import AllQueues from '~/components/Queue/AllQueues.vue'
+import QrNfcCard from "~/components/QrNfc/QrNfcCard.vue";
+import MyContainer from "~/components/LayoutComponents/MyContainer.vue";
+import AllQueues from "~/components/Queue/AllQueues.vue";
 
 export default {
-  name: 'IndexPage',
+  name: "IndexPage",
   components: { MyContainer, QrNfcCard, AllQueues },
-  middleware: 'auth',
+  middleware: "auth",
   data() {
     return {
       socket: null,
       orders: [],
-    }
+    };
   },
-  // async mounted() {
-  //   const orders = await this.$axios.get('/api/order?status=pending,new')
-  //   this.orders = orders.data
-  //   this.socket = this.$nuxtSocket({
-  //     channel: '/',
-  //   })
-  //   const storeIds = []
-  //   await orders.data.forEach(async (order) => {
-  //     if (!storeIds.includes(order.storeId)) {
-  //       storeIds.push(order.storeId)
-  //       await this.socket.on(`order/store/${order.storeId}`, (data) => {
-  //         this.updateQueue(data, order.storeId)
-  //       })
-  //     }
-  //     await this.socket.on(`order/${order.id}`, (data) => {
-  //       this.updateData(data)
-  //     })
-  //   })
-  // },
+  async mounted() {
+    const orders = await this.$axios.get("/api/order?status=pending,new");
+    this.orders = orders.data;
+    this.socket = this.$nuxtSocket({});
+    const storeIds = [];
+    await orders.data.forEach(async (order) => {
+      if (!storeIds.includes(order.storeId)) {
+        storeIds.push(order.storeId);
+        await this.socket.on(`order/store/${order.storeId}`, (data) => {
+          this.updateQueue(data, order.storeId);
+        });
+      }
+      await this.socket.on(`order/${order.id}`, (data) => {
+        this.updateData(data);
+      });
+    });
+  },
   methods: {
     updateData(data) {
-      const index = this.orders.findIndex((order) => order.id === data.id)
-      this.orders[index].status = data.status
+      const index = this.orders.findIndex((order) => order.id === data.id);
+      this.orders[index].status = data.status;
     },
     updateQueue(data, storeId) {
       this.orders.forEach((order, i) => {
         if (order.storeId === storeId) {
-          order.store.orders = data
+          order.store.orders = data;
         }
-      })
+      });
     },
   },
-}
+};
 </script>

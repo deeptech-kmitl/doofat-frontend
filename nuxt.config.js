@@ -117,6 +117,16 @@ export default {
     credentials: true,
   },
 
+  io: {
+    sockets: [
+      {
+        name: "socket",
+        url: "http://localhost:3001/socket",
+        default: true,
+      },
+    ],
+  },
+
   router: {
     // middleware: ['auth'],
   },
