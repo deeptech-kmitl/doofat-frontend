@@ -55,10 +55,5 @@ export default {
   data: () => ({
     showFood: false,
   }),
-  methods: {
-    goTo() {
-      console.log('Redirect')
-    },
-  },
-}
+};
 </script>

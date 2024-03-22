@@ -48,15 +48,17 @@
         </v-icon>
       </v-btn>
     </v-card>
+    <profile-dialog />
     <QRCode ref="QRCode" @dialog="setDialog" />
   </div>
 </template>
 
 <script>
+import ProfileDialog from "@/components/LayoutComponents/ProfileDialog.vue";
 import QRCode from "@/components/QrNfc/QRCode.vue";
 export default {
   name: "MenuBar",
-  components: { QRCode },
+  components: { ProfileDialog, QRCode },
   data() {
     return {
       dialog: false,
