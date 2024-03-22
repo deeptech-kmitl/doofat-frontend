@@ -98,9 +98,9 @@
                     :key="food.id"
                     :food="food"
                     @openDialog="
-                      selectedFood = { ...food, quantity: 1, orderDesc: '' }
-                      foodDialogRemovable = false
-                      foodDialog = true
+                      selectedFood = { ...food, quantity: 1, orderDesc: '' };
+                      foodDialogRemovable = false;
+                      foodDialog = true;
                     "
                   >
                   </food-card>
@@ -113,9 +113,9 @@
                 :cart="cart"
                 @openFoodDialog="
                   (food) => {
-                    selectedFood = food
-                    foodDialogRemovable = true
-                    foodDialog = true
+                    selectedFood = food;
+                    foodDialogRemovable = true;
+                    foodDialog = true;
                   }
                 "
                 @sendOrder="sendOrder"
@@ -153,7 +153,7 @@
             >{{
               cart.length > 0
                 ? cart.reduce((sum, arrVal) => (sum += arrVal.quantity), 0)
-                : '0'
+                : "0"
             }}</v-chip
           >
           <v-icon size="25" color="white">mdi-cart</v-icon>
@@ -182,9 +182,9 @@
                 :cart="cart"
                 @openFoodDialog="
                   (food) => {
-                    selectedFood = food
-                    foodDialogRemovable = true
-                    foodDialog = true
+                    selectedFood = food;
+                    foodDialogRemovable = true;
+                    foodDialog = true;
                   }
                 "
                 @sendOrder="sendOrder"
@@ -198,67 +198,67 @@
 </template>
 
 <script>
-import MyContainer from '~/components/LayoutComponents/MyContainer.vue'
-import FoodCard from '~/components/Store/FoodCard.vue'
-import CartBox from '~/components/Store/CartBox.vue'
-import FoodDialog from '~/components/Store/FoodDialog.vue'
+import MyContainer from "~/components/LayoutComponents/MyContainer.vue";
+import FoodCard from "~/components/Store/FoodCard.vue";
+import CartBox from "~/components/Store/CartBox.vue";
+import FoodDialog from "~/components/Store/FoodDialog.vue";
 
-import creditsJSON from '~/JSON/credits.json'
-let location = null
+import creditsJSON from "~/JSON/credits.json";
+let location = null;
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     (position) => {
       location = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-      }
+      };
     },
     (error) => {
       switch (error.code) {
         case error.PERMISSION_DENIED:
-          console.log('User denied the request for Geolocation.')
-          break
+          console.log("User denied the request for Geolocation.");
+          break;
         case error.POSITION_UNAVAILABLE:
-          console.log('Location information is unavailable.')
-          break
+          console.log("Location information is unavailable.");
+          break;
         case error.TIMEOUT:
-          console.log('The request to get user location timed out.')
-          break
+          console.log("The request to get user location timed out.");
+          break;
         case error.UNKNOWN_ERROR:
-          console.log('An unknown error occurred.')
-          break
+          console.log("An unknown error occurred.");
+          break;
       }
     }
-  )
+  );
 } else {
-  console.log('Geolocation is not supported by this browser.')
+  console.log("Geolocation is not supported by this browser.");
 }
 
 export default {
-  name: 'StorePage',
+  name: "StorePage",
   components: {
     MyContainer,
     FoodCard,
     FoodDialog,
     CartBox,
   },
-  middleware: 'auth',
+  middleware: "auth",
   async asyncData({ params, $axios, redirect }) {
     if (location == null) {
       try {
-        const store = await $axios.get(`/api/myStore/${params.store}`)
-        return { store: store.data }
+        const store = await $axios.get(`/api/myStore/${params.store}`);
+        return { store: store.data };
       } catch (error) {
-        return { allow: true }
+        return { allow: true };
       }
     }
     try {
       const store = await $axios.get(
         `/api/myStore/${params.store}?location=${location.lat},${location.lng}`
-      )
-      return { store: store.data }
+      );
+      return { store: store.data };
     } catch (error) {
-      return { far: true }
+      return { far: true };
     }
   },
   data: () => ({
@@ -274,55 +274,55 @@ export default {
     allow: false,
     orders: [],
   }),
-  // async fetch() {
-  //   if (this.store) {
-  //     const orders = await this.$axios.get(
-  //       `/api/order/${this.store.id}?status=pending,new`
-  //     )
-  //     this.orders = orders.data
-  //   }
-  // },
-  // mounted() {
-  //   if (this.store) {
-  //     this.socket = this.$nuxtSocket({
-  //       channel: '/',
-  //     })
-  //     this.socket.on(`order/mystore/${this.store.id}`, (data) => {
-  //       this.orders = data
-  //     })
-  //   }
-  // },
+  async fetch() {
+    if (this.store) {
+      const orders = await this.$axios.get(
+        `/api/order/${this.store.id}?status=pending,new`
+      );
+      this.orders = orders.data;
+    }
+  },
+  mounted() {
+    if (this.store) {
+      this.socket = this.$nuxtSocket({
+        channel: "/",
+      });
+      this.socket.on(`order/mystore/${this.store.id}`, (data) => {
+        this.orders = data;
+      });
+    }
+  },
   methods: {
     addFood(food, amount, userDesc) {
-      const index = this.cart.findIndex((arrVal) => food.id === arrVal.id)
+      const index = this.cart.findIndex((arrVal) => food.id === arrVal.id);
       if (index !== -1) {
-        this.cart[index].quantity = amount
-        this.cart[index].orderDesc = userDesc
+        this.cart[index].quantity = amount;
+        this.cart[index].orderDesc = userDesc;
       } else {
-        this.cart.push({ ...food, quantity: amount, orderDesc: userDesc })
+        this.cart.push({ ...food, quantity: amount, orderDesc: userDesc });
       }
     },
     removeFood(id) {
-      const index = this.cart.findIndex((arrVal) => id === arrVal.id)
+      const index = this.cart.findIndex((arrVal) => id === arrVal.id);
       if (index !== -1) {
-        this.cart.splice(index, 1)
+        this.cart.splice(index, 1);
       }
-      this.foodDialog = false
+      this.foodDialog = false;
     },
     sendOrder() {
-      const orderFoods = []
+      const orderFoods = [];
       for (let i = 0; i < this.cart.length; i++) {
         orderFoods.push({
           id: this.cart[i].id,
           name: this.cart[i].name,
           price: this.cart[i].price,
           amount: this.cart[i].quantity,
-        })
+        });
       }
       this.$axios
         .post(`/api/order/${this.store.id}`, { foods: orderFoods })
-        .then((res) => this.$router.push('/home'))
+        .then((res) => this.$router.push("/home"));
     },
   },
-}
+};
 </script>

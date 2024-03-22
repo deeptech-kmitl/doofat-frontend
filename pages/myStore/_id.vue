@@ -194,7 +194,7 @@
             ลบร้าน
           </v-btn>
         </div>
-        <!-- <store-order :id="store.id" /> -->
+        <store-order :id="store.id" />
       </div>
     </my-container>
     <v-dialog
@@ -227,7 +227,6 @@
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
 import MyContainer from '~/components/LayoutComponents/MyContainer.vue'
 import FoodCard from '~/components/Store/FoodCard.vue'
 import EditFoodDialog from '~/components/Store/EditFoodDialog.vue'

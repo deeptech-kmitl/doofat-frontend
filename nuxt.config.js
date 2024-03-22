@@ -118,10 +118,15 @@ export default {
   },
 
   io: {
+    // Options
+    server: false,
     sockets: [
       {
-        name: "socket",
-        url: "http://localhost:3001/socket",
+        name: "main",
+        url:
+          process.env.NODE_ENV === "development"
+            ? "ws://localhost:3001"
+            : "wss://doofat.pongphun.com",
         default: true,
       },
     ],
